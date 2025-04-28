@@ -3,21 +3,31 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import main.MainApp;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Controller for the FloorLayout.fxml view.
+ * Handles table creation, status tracking (open/occupied/dirty),
+ * updating table colors, and navigation to table details.
+ */
 public class FloorLayoutController {
 
     @FXML
     private GridPane tableGrid;
 
-    // Table number -> Status (0 = open, 1 = occupied, 2 = dirty)
+    /**
+     * Map to track the status of each table.
+     * Key = table number (1-30), Value = status
+     * 0 = Open (green), 1 = Occupied (yellow), 2 = Dirty (red)
+     */
     public static final Map<Integer, Integer> tableStatus = new HashMap<>();
 
+    /**
+     * Initialize the floor layout by creating 30 tables with 4 seats each.
+     */
     @FXML
     private void initialize() {
         int tableNumber = 1;
@@ -33,9 +43,15 @@ public class FloorLayoutController {
         }
     }
 
+    /**
+     * Creates a VBox representing a table with a label and 4 seat icons.
+     *
+     * @param tableNumber The table number to create.
+     * @return The VBox representing the table.
+     */
     private VBox createTable(int tableNumber) {
-        VBox tableBox = new VBox(15); // more vertical space between table label and seats
-        tableBox.setPrefSize(140, 140); // make the whole table bigger
+        VBox tableBox = new VBox(15);
+        tableBox.setPrefSize(140, 140);
         tableBox.setStyle("-fx-alignment: center; -fx-background-color: lightgreen; -fx-border-color: black; -fx-border-radius: 5; -fx-background-radius: 5;");
 
         Label tableLabel = new Label("Table " + tableNumber);
@@ -63,25 +79,33 @@ public class FloorLayoutController {
         tableBox.setOnMouseClicked(event -> handleTableClick(tableNumber));
 
         tableStatus.putIfAbsent(tableNumber, 0);
-
         updateTableColor(tableBox, tableStatus.get(tableNumber));
 
         return tableBox;
     }
 
-
-
+    /**
+     * Updates the background color of a table based on its status.
+     *
+     * @param pane   The Pane (VBox) representing the table.
+     * @param status The current status of the table.
+     */
     public static void updateTableColor(Pane pane, int status) {
         String color;
         switch (status) {
             case 0 -> color = "lightgreen";   // Open
             case 1 -> color = "gold";          // Occupied
             case 2 -> color = "indianred";     // Dirty
-            default -> color = "lightgray";
+            default -> color = "lightgray";    // Unknown
         }
         pane.setStyle("-fx-alignment: center; -fx-background-color: " + color + "; -fx-border-color: black; -fx-border-radius: 5; -fx-background-radius: 5;");
     }
 
+    /**
+     * Handles clicking a table by setting the selected table and changing scene to TableDetails.
+     *
+     * @param tableNumber The number of the table clicked.
+     */
     private void handleTableClick(int tableNumber) {
         TableDetailsController.setSelectedTable(tableNumber);
         try {
@@ -91,10 +115,15 @@ public class FloorLayoutController {
         }
     }
 
+    /**
+     * Refreshes all tables on the floor layout based on their current status.
+     *
+     * @param tableGrid The GridPane containing all the tables.
+     */
     public static void refreshFloor(GridPane tableGrid) {
         for (var node : tableGrid.getChildren()) {
             if (node instanceof VBox tableBox) {
-                Label label = (Label) tableBox.getChildren().get(0); // First child = Label "Table X"
+                Label label = (Label) tableBox.getChildren().get(0); 
                 String text = label.getText();
                 if (text.startsWith("Table")) {
                     int tableNum = Integer.parseInt(text.split(" ")[1]);
@@ -104,6 +133,9 @@ public class FloorLayoutController {
         }
     }
 
+    /**
+     * Handles logout action by returning the user to the Login screen.
+     */
     @FXML
     private void handleLogout() {
         try {
