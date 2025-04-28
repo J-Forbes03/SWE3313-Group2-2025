@@ -5,9 +5,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Utility class for loading waiter data from a file.
+ * Reads a list of waiters from the resource file "/waiters".
+ */
 public class WaiterDataLoader {
 
+    /**
+     * Loads the list of waiters from the "/waiters" file located in the resources folder.
+     * Each line in the file should contain waiter data in the format: id,name,password
+     *
+     * @return A list of Waiter objects loaded from the file.
+     */
     public static List<Waiter> loadWaiters() {
         List<Waiter> waiters = new ArrayList<>();
 
