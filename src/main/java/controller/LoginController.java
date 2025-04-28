@@ -8,7 +8,10 @@ import model.WaiterDataLoader;
 
 import java.util.List;
 
-
+/**
+ * Controller for the Login.fxml view.
+ * Handles waiter login authentication by verifying ID and password.
+ */
 public class LoginController {
 
     @FXML
@@ -22,11 +25,19 @@ public class LoginController {
 
     private final List<Waiter> waiters;
 
+    /**
+     * Constructor that loads waiter data from the file using WaiterDataLoader.
+     */
     public LoginController() {
         waiters = WaiterDataLoader.loadWaiters();
     }
 
-
+    /**
+     * Handles the login button action.
+     * Checks entered ID and password against loaded waiter data.
+     * If successful, switches scene to Floor Layout.
+     * If failed, displays an appropriate error message.
+     */
     @FXML
     private void handleLogin() {
         String idText = idField.getText().trim();
@@ -41,6 +52,7 @@ public class LoginController {
                     return;
                 }
             }
+            // No matching waiter found
             errorLabel.setText("Invalid ID or Password.");
         } catch (NumberFormatException e) {
             errorLabel.setText("Please enter a valid ID number.");
