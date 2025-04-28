@@ -10,7 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Controller for the MenuSelection.fxml view.
+ * Handles displaying food categories, listing menu items,
+ * and adding selected items to a table's order.
+ */
 public class MenuSelectionController {
 
     @FXML
@@ -19,9 +23,16 @@ public class MenuSelectionController {
     @FXML
     private ListView<String> itemListView;
 
-    // Category -> List of food items
+    /**
+     * Map to store the restaurant menu.
+     * Key = category name, Value = list of menu items under that category.
+     */
     private final Map<String, List<String>> menuMap = new HashMap<>();
 
+    /**
+     * Initializes the menu selection screen.
+     * Sets up menu categories and handles category selection changes.
+     */
     @FXML
     private void initialize() {
         setupMenu();
@@ -36,6 +47,9 @@ public class MenuSelectionController {
         });
     }
 
+    /**
+     * Populates the menuMap with predefined categories and menu items.
+     */
     private void setupMenu() {
         menuMap.put("Soups/Salads", List.of("Caesar Salad", "Garden Salad", "Tomato Soup", "Chicken Noodle Soup"));
         menuMap.put("Appetizers", List.of("Mozzarella Sticks", "Wings", "Queso Dip", "Spinach Dip"));
@@ -44,6 +58,10 @@ public class MenuSelectionController {
         menuMap.put("Beverages", List.of("Coffee", "Sweet Tea", "Coke", "Orange Juice"));
     }
 
+    /**
+     * Handles adding the selected item from the menu to the current table's order.
+     * Displays confirmation or warning alerts depending on selection.
+     */
     @FXML
     private void handleAddItem() {
         String selectedItem = itemListView.getSelectionModel().getSelectedItem();
@@ -64,6 +82,9 @@ public class MenuSelectionController {
         }
     }
 
+    /**
+     * Handles navigating back to the Table Details screen.
+     */
     @FXML
     private void handleBackToTable() {
         try {
