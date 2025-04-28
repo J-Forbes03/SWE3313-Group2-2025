@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.TableDetailsController">
+
+    <top>
+        <Label fx:id="tableLabel" text="Table Details" style="-fx-font-size: 24px;">
+            <BorderPane.alignment>CENTER</BorderPane.alignment>
+        </Label>
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <ListView fx:id="orderListView" prefHeight="300"/>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Button text="Add Item" onAction="#handleAddItem"/>
+            <Button fx:id="markButton" text="Mark Dirty" onAction="#handleMarkDirty"/>
+            <Button text="Delete Selected Item" onAction="#handleDeleteItem"/>
+            <Button text="Clear All Items" onAction="#handleClearAllItems"/>
+            <Button text="Back to Floor" onAction="#handleBackToFloor"/>
+        </HBox>
+    </bottom>
+
+
+</BorderPane>
