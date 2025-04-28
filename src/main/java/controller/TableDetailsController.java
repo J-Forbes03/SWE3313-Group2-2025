@@ -9,6 +9,11 @@ import main.MainApp;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Controller for the TableDetails.fxml view.
+ * Handles managing individual table orders, marking tables as dirty or clean,
+ * and navigating between the table details and menu selection screens.
+ */
 public class TableDetailsController {
 
     @FXML
@@ -18,17 +23,29 @@ public class TableDetailsController {
     private ListView<String> orderListView;
 
     @FXML
-    private Button markButton; // mark dirty or clean button
+    private Button markButton; // Button to mark table dirty or clean
 
     private static int selectedTableNumber;
 
-
+    /**
+     * Map to track orders for each table.
+     * Key = table number, Value = list of ordered items.
+     */
     private static final Map<Integer, ObservableList<String>> allTableOrders = new HashMap<>();
 
+    /**
+     * Sets the currently selected table number.
+     *
+     * @param tableNumber The table number selected.
+     */
     public static void setSelectedTable(int tableNumber) {
         selectedTableNumber = tableNumber;
     }
 
+    /**
+     * Initializes the table details screen.
+     * Loads the table's current orders and updates the mark button text.
+     */
     @FXML
     private void initialize() {
         tableLabel.setText("Table " + selectedTableNumber + " Details");
@@ -41,6 +58,9 @@ public class TableDetailsController {
         updateMarkButtonText();
     }
 
+    /**
+     * Updates the text on the mark button depending on table's status (dirty or clean).
+     */
     private void updateMarkButtonText() {
         int status = FloorLayoutController.tableStatus.getOrDefault(selectedTableNumber, 0);
         if (status == 2) {
@@ -50,6 +70,9 @@ public class TableDetailsController {
         }
     }
 
+    /**
+     * Handles navigating to the menu selection screen to add an item.
+     */
     @FXML
     private void handleAddItem() {
         try {
@@ -59,6 +82,10 @@ public class TableDetailsController {
         }
     }
 
+    /**
+     * Handles marking the table as dirty or clean.
+     * Updates the table status accordingly and returns to the floor layout.
+     */
     @FXML
     private void handleMarkDirty() {
         int currentStatus = FloorLayoutController.tableStatus.getOrDefault(selectedTableNumber, 0);
@@ -70,6 +97,9 @@ public class TableDetailsController {
         handleBackToFloor();
     }
 
+    /**
+     * Handles navigating back to the floor layout view.
+     */
     @FXML
     private void handleBackToFloor() {
         try {
@@ -79,6 +109,10 @@ public class TableDetailsController {
         }
     }
 
+    /**
+     * Deletes the selected item from the table's order list.
+     * If no items remain, the table is marked as open.
+     */
     @FXML
     private void handleDeleteItem() {
         String selectedItem = orderListView.getSelectionModel().getSelectedItem();
@@ -98,6 +132,10 @@ public class TableDetailsController {
         }
     }
 
+    /**
+     * Clears all items from the table's order list.
+     * After clearing, the table is marked as open (green).
+     */
     @FXML
     private void handleClearAllItems() {
         allTableOrders.get(selectedTableNumber).clear();
@@ -106,7 +144,12 @@ public class TableDetailsController {
         FloorLayoutController.tableStatus.put(selectedTableNumber, 0); // open
     }
 
-
+    /**
+     * Adds a new item to the selected table's order list.
+     * If the table is not dirty, it is marked as occupied.
+     *
+     * @param item The food item to add.
+     */
     public static void addOrderItem(String item) {
         allTableOrders.putIfAbsent(selectedTableNumber, FXCollections.observableArrayList());
         allTableOrders.get(selectedTableNumber).add(item);
